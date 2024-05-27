@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const { Client, Environment } = require('square');
 
 dotenv.config();
@@ -15,6 +16,8 @@ const client = new Client({
   environment: Environment.Sandbox, // Use Environment.Production for live transactions
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
+
+app.use(cors());
 
 // Define a route to handle payment processing
 app.post('/process-payment', async (req, res) => {
