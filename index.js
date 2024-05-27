@@ -6,14 +6,14 @@ const { Client, Environment } = require('square');
 
 dotenv.config();
 
-const app = express();
+const app = express(); 
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
 // Initialize Square client
 const client = new Client({
-  environment: Environment.Sandbox, // Use Environment.Production for live transactions
+  environment: Environment.Sandbox, 
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
 
@@ -27,16 +27,19 @@ app.post('/process-payment', async (req, res) => {
     const paymentsApi = client.paymentsApi;
     const requestBody = {
       sourceId: nonce,
-      idempotencyKey: new Date().getTime().toString(), // Unique key to prevent duplicate charges
+      idempotencyKey: new Date().getTime().toString(), 
       amountMoney: {
-        amount: amount, // The payment amount in smallest currency unit (e.g., cents for USD)
+        amount: amount, 
         currency: 'USD',
       },
       locationId: process.env.SQUARE_LOCATION_ID,
     };
 
     const { result } = await paymentsApi.createPayment(requestBody);
+
     res.status(200).json({ success: true, result });
+    console.log(result)
+    
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
