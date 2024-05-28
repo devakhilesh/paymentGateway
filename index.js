@@ -6,14 +6,14 @@ const { Client, Environment } = require('square');
 
 dotenv.config();
 
-const app = express(); 
+const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
 // Initialize Square client
 const client = new Client({
-  environment: Environment.Sandbox, 
+  environment: Environment.Sandbox,
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
 
@@ -32,7 +32,7 @@ app.post('/process-payment', async (req, res) => {
       sourceId: nonce,
       idempotencyKey: new Date().getTime().toString(),
       amountMoney: {
-        amount: Number(amountInCents), // Ensure this is a regular number
+        amount: amountInCents, // Ensure this is a regular number
         currency: 'USD',
       },
       locationId: process.env.SQUARE_LOCATION_ID,
