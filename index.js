@@ -21,8 +21,8 @@ app.use(cors());
 
 // Define a route to handle payment processing
 app.post('/process-payment', async (req, res) => {
-  const { nonce} = req.body;
-  req.body.amount  = "5.25"
+  const { nonce, amount} = req.body;
+     amount  = "5.25"
   // Convert the amount to the smallest currency unit (cents for USD)
   let amountInCents = Math.round(parseFloat(amount) * 100);
 
