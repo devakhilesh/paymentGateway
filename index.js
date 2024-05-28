@@ -22,7 +22,7 @@ app.use(cors());
 // Define a route to handle payment processing
 app.post('/process-payment', async (req, res) => {
   const { nonce, amount } = req.body;
-
+console.log("calling duniya")
   try {
     const paymentsApi = client.paymentsApi;
     const requestBody = {
@@ -36,12 +36,12 @@ app.post('/process-payment', async (req, res) => {
     };
 
     const { result } = await paymentsApi.createPayment(requestBody);
+    console.log(result)
 
     res.status(200).json({ success: true, result });
-    console.log(result)
     
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: "backend error" });
   }
 });
 
