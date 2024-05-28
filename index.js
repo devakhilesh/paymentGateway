@@ -21,14 +21,14 @@ app.use(cors());
 
 // Define a route to handle payment processing
 app.post('/process-payment', async (req, res) => {
-  const { nonce, amount } = req.body;
-
+  const { nonce} = req.body;
+  req.body.amount  = "5.25"
   // Convert the amount to the smallest currency unit (cents for USD)
   let amountInCents = Math.round(parseFloat(amount) * 100);
 
   // Check if amountInCents is a BigInt and convert it to a regular number
   if (typeof amountInCents === 'bigint') {
-    amountInCents = Number(amountInCents); // Convert BigInt to regular number
+    amountInCents = Number(amountInCents); 
   }
 
   try {
