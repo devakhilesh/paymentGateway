@@ -23,6 +23,7 @@ app.use(cors());
 app.post('/process-payment', async (req, res) => {
   const { nonce, amount } = req.body;
   
+  // Convert the amount to the smallest currency unit (cents for USD)
   const amountInCents = Math.round(parseFloat(amount) * 100);
 
   try {
@@ -31,7 +32,7 @@ app.post('/process-payment', async (req, res) => {
       sourceId: nonce,
       idempotencyKey: new Date().getTime().toString(),
       amountMoney: {
-        amount: BigInt(amountInCents), 
+        amount: amountInCents, // Ensure this is an integer
         currency: 'USD',
       },
       locationId: process.env.SQUARE_LOCATION_ID,
