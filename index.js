@@ -23,7 +23,7 @@ app.use(cors());
 app.post('/process-payment', async (req, res) => {
   let data = req.body
   let { nonce} = data;
-     data.amount  = "5.252"
+     data.amount  = "5.265"
   // Convert the amount to the smallest currency unit (cents for USD)
   let amountInCents = Math.round(parseFloat(data.amount) * 100);
 
