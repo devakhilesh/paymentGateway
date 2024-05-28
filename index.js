@@ -41,6 +41,7 @@ console.log("calling duniya")
     res.status(200).json({ success: true, result });
     
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
