@@ -24,7 +24,12 @@ app.post('/process-payment', async (req, res) => {
   const { nonce, amount } = req.body;
 
   // Convert the amount to the smallest currency unit (cents for USD)
-  const amountInCents = Math.round(parseFloat(amount) * 100);
+  let amountInCents = Math.round(parseFloat(amount) * 100);
+
+  // Check if amountInCents is a BigInt and convert it to a regular number
+  if (typeof amountInCents === 'bigint') {
+    amountInCents = Number(amountInCents); // Convert BigInt to regular number
+  }
 
   try {
     const paymentsApi = client.paymentsApi;
@@ -32,7 +37,7 @@ app.post('/process-payment', async (req, res) => {
       sourceId: nonce,
       idempotencyKey: new Date().getTime().toString(),
       amountMoney: {
-        amount: amountInCents, // Ensure this is a regular number
+        amount: amountInCents, // Use the converted value here
         currency: 'USD',
       },
       locationId: process.env.SQUARE_LOCATION_ID,
@@ -41,7 +46,12 @@ app.post('/process-payment', async (req, res) => {
     const { result } = await paymentsApi.createPayment(requestBody);
     console.log(result);
 
-    res.status(200).json({ success: true, result });
+    // Convert any BigInt values in the result to regular numbers before sending the response
+    const sanitizedResult = JSON.parse(JSON.stringify(result, (key, value) =>
+      typeof value === 'bigint'? Number(value) : value
+    ));
+
+    res.status(200).json({ success: true, result: sanitizedResult });
 
   } catch (error) {
     console.error(error.message);
