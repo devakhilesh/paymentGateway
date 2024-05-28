@@ -22,6 +22,8 @@ app.use(cors());
 // Define a route to handle payment processing
 app.post('/process-payment', async (req, res) => {
   const { nonce, amount } = req.body;
+  console.log(typeof amount)
+  req.body.amount = Number(amount);
 console.log("calling duniya")
   try {
     const paymentsApi = client.paymentsApi;
